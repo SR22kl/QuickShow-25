@@ -100,8 +100,12 @@ export const createBooking = async (req, res) => {
 
     // Run inngest funtion to check payment status after 10 min
     await inngest.send(
-      "app/checkpayment",
-      { bookingId: booking._id.toString() },
+      {
+        name: "app/checkpayment", 
+        data: {
+          bookingId: booking._id.toString(),
+        },
+      },
       { delay: 10 * 60 * 1000 }
     );
 
