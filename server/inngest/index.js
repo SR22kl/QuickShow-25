@@ -116,7 +116,7 @@ const sendConfirmationEmail = inngest.createFunction(
             <li style="margin-bottom: 10px; font-size: 16px; color: #555;"><strong style="color: #333;">Movie:</strong> ${
               booking.show.movie.title
             }</li>
-            <li style="margin-bottom: 10px; font-size: 16px; color: #555;"><strong style="color: #333;">Show:</strong> ${new Date(
+            <li style="margin-bottom: 10px; font-size: 16px; color: #555;"><strong style="color: #333;">Show Date:</strong> ${new Date(
               booking.show.showDateTime
             ).toLocaleDateString("en-US", {
               weekday: "long",
@@ -124,7 +124,7 @@ const sendConfirmationEmail = inngest.createFunction(
               month: "long",
               day: "numeric",
             })}</li>
-            <li style="margin-bottom: 10px; font-size: 16px; color: #555;"><strong style="color: #333;">Show:</strong> ${new Date(
+            <li style="margin-bottom: 10px; font-size: 16px; color: #555;"><strong style="color: #333;">Show Time:</strong> ${new Date(
               booking.show.showDateTime
             ).toLocaleTimeString("en-US", {
               hour: "numeric",
@@ -138,7 +138,7 @@ const sendConfirmationEmail = inngest.createFunction(
         </div>
         <div style="background-color: #f8f8f8; padding: 15px; text-align: center; font-size: 14px; color: #777; border-top: 1px solid #ddd;">
           <p style="margin: 0;">Enjoy your movie! 🍿</p>
-          <p style="margin: 5px 0 0;">Thank for booking with us!😊 <br/>- QuickShow Tema</p>
+          <p style="margin: 5px 0 0;">Thank for booking with us!😊 <br/>QuickShow Team</p>
         </div>
       </div>
     `,
