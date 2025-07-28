@@ -1,12 +1,9 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { assets } from "../../assets/assets";
-import { UserButton, useUser } from "@clerk/clerk-react";
-import { TicketPlus } from "lucide-react";
 
 const AdminNavbar = () => {
-  const { user } = useUser();
-  const navigate = useNavigate();
+  // const { user } = useUser();
+  // const navigate = useNavigate();
 
   return (
     <>
@@ -14,7 +11,7 @@ const AdminNavbar = () => {
         <Link to={"/"}>
           <img src={assets.logo} alt="logo" className="w-36 h-auto" />
         </Link>
-        {user && (
+        {/* {user && (
           <UserButton>
             <UserButton.MenuItems>
               <UserButton.Action
@@ -24,7 +21,7 @@ const AdminNavbar = () => {
               />
             </UserButton.MenuItems>
           </UserButton>
-        )}
+        )} */}
       </div>
     </>
   );

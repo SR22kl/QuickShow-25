@@ -1,6 +1,18 @@
 import React from "react";
+import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Loader = () => {
+  const { nextUrl } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (nextUrl) {
+      setTimeout(() => {
+        navigate("/" + nextUrl);
+      }, 8000);
+    }
+  }, [nextUrl]);
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#09090b] md:mt-0 -mt-10">
       {/* Spinner container */}

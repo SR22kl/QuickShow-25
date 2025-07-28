@@ -1,39 +1,43 @@
 import { useEffect, useState } from "react";
-import { dummyShowsData } from "../../assets/assets";
-import Loader from "../../components/Loader";
+import toast from "react-hot-toast";
+import { useAppContext } from "../../appContext/AppContext";
 import Title from "../../components/admin/Title";
 import BlurCircle from "../../components/BlurCircle";
+import Loader from "../../components/Loader";
 import dateFormat from "../../lib/dateFormat";
 
 const ListShows = () => {
   const currency = import.meta.env.VITE_CURRENCY;
+  const { axios, user, getToken } = useAppContext();
 
   const [shows, setShows] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const getAllShows = async () => {
     try {
-      setShows([
-        {
-          movie: dummyShowsData[0],
-          showDateTime: "2025-06-30T02:30:00.000Z",
-          showPrice: 59,
-          occupiedSeats: {
-            A1: "user_1",
-            B1: "user_2",
-            C1: "user_3",
-          },
+      const token = await getToken();
+      if (!token) return;
+      const { data } = await axios.get("/api/admin/all-shows", {
+        headers: {
+          authorization: `Bearer ${token}`,
         },
-      ]);
+      });
+      if (data.success) {
+        setShows(data.shows);
+        setLoading(false);
+      }
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.error("Error in fetching list of shows", error);
+      toast.error(error.message);
     }
   };
 
   useEffect(() => {
-    getAllShows();
-  }, []);
+    if (user) {
+      getAllShows();
+    }
+  }, [user]);
 
   return !loading ? (
     <>
@@ -58,9 +62,12 @@ const ListShows = () => {
                 >
                   <td className="p-2 min-w-45 pl-5">{show?.movie?.title}</td>
                   <td className="p-2">{dateFormat(show?.showDateTime)}</td>
-                  <td className="p-2">{Object.keys(show?.occupiedSeats).length}</td>
                   <td className="p-2">
-                    {currency + Object.keys(show?.occupiedSeats).length * show?.showPrice}
+                    {Object.keys(show?.occupiedSeats).length}
+                  </td>
+                  <td className="p-2">
+                    {currency +
+                      Object.keys(show?.occupiedSeats).length * show?.showPrice}
                   </td>
                 </tr>
               ))}

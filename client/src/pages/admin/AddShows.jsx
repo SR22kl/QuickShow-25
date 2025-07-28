@@ -1,32 +1,41 @@
+import { CheckIcon, DeleteIcon, StarIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import { dummyShowsData } from "../../assets/assets";
+import toast from "react-hot-toast";
+import { useAppContext } from "../../appContext/AppContext";
 import Title from "../../components/admin/Title";
 import BlurCircle from "../../components/BlurCircle";
 import Loader from "../../components/Loader";
-import { CheckIcon, DeleteIcon, StarIcon } from "lucide-react";
 import kConverter from "../../lib/kConverter";
-import toast from "react-hot-toast";
 
 const AddShows = () => {
   const currency = import.meta.env.VITE_CURRENCY;
+  const { axios, user, getToken, image_base_url } = useAppContext();
 
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [dateTimeSelection, setDateTimeSelection] = useState({});
   const [dateTimeInput, setDateTimeInput] = useState("");
   const [showPrice, setShowPrice] = useState("");
+  const [addingShow, setAddingShow] = useState(false);
 
-  /*************  ✨ Windsurf Command ⭐  *************/
-  /**
-   * Fetches the list of movies currently playing in theaters.
-   * NOTE: This is a placeholder function and will be replaced with a real API call.
-   */
-  /*******  12d18fe7-91af-439f-816b-3908fed80359  *******/
+  console.log(nowPlayingMovies);
+
   const fetchNowPlayingMovies = async () => {
-    setNowPlayingMovies(dummyShowsData);
+    try {
+      const { data } = await axios.get("/api/show/now-playing", {
+        headers: {
+          authorization: `Bearer ${await getToken()}`,
+        },
+      });
+      if (data.success) {
+        setNowPlayingMovies(data.movies);
+      }
+    } catch (error) {
+      console.error("Error in fetching movies!", error);
+      toast.error(error.message);
+    }
   };
-
-  // console.log(selectedMovie);
+  // console.log(nowPlayingMovies);
 
   const dateTimeHandler = () => {
     if (!dateTimeInput) return;
@@ -58,10 +67,63 @@ const AddShows = () => {
       };
     });
   };
+  const handleSubmit = async () => {
+    try {
+      setAddingShow(true);
 
+      if (
+        !selectedMovie ||
+        Object.keys(dateTimeSelection).length === 0 ||
+        !showPrice
+      ) {
+        setAddingShow(false);
+        return toast.error("Please fill all the fields");
+      }
+      // Object.entries returns [key, value] pairs, so [date, timesArray] correctly captures the date and its array of times.
+      const showsInput = Object.entries(dateTimeSelection).map(
+        ([date, timesArray]) => ({
+          date,
+          time: timesArray,
+        })
+      );
+
+      const payload = {
+        movieId: selectedMovie,
+        showsInput,
+        showPrice: Number(showPrice),
+      };
+
+      const { data } = await axios.post("/api/show/add", payload, {
+        headers: {
+          authorization: `Bearer ${await getToken()}`,
+        },
+      });
+
+      if (data.success) {
+        toast.success(data.message);
+        setSelectedMovie(null);
+        setShowPrice("");
+        setDateTimeSelection({});
+      } else {
+        // data.success is false but no error was thrown by axios
+        toast.error(data.message || "Failed to add show.");
+      }
+    } catch (error) {
+      console.log("Submission error", error);
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          "An unexpected error occurred during submission."
+      );
+    } finally {
+      setAddingShow(false);
+    }
+  };
   useEffect(() => {
-    fetchNowPlayingMovies();
-  }, []);
+    if (user) {
+      fetchNowPlayingMovies();
+    }
+  }, [user]);
 
   return nowPlayingMovies.length > 0 ? (
     <>
@@ -82,7 +144,7 @@ const AddShows = () => {
               >
                 <div className="relative rounded-lg overflow-hidden">
                   <img
-                    src={movie?.poster_path}
+                    src={image_base_url + movie?.poster_path}
                     alt="poster"
                     className="w-full object-cover brightness-90"
                   />
@@ -183,8 +245,12 @@ const AddShows = () => {
       )}
 
       {/* Add Show Button */}
-      <button className=" mt-6 px-8 py-2 rounded-lg bg-gradient-to-b from-red-500 to-red-700 hover:bg-gradient-to-b hover:from-red-700 hover:to-red-500 transition duration-300 ease-in mb-6 active:scale-95 text-white cursor-pointer">
-        Add Show
+      <button
+        onClick={handleSubmit}
+        disabled={addingShow}
+        className=" mt-6 px-8 py-2 rounded-lg bg-gradient-to-b from-red-500 to-red-700 hover:bg-gradient-to-b hover:from-red-700 hover:to-red-500 transition duration-300 ease-in mb-6 active:scale-95 text-white cursor-pointer"
+      >
+        {addingShow ? "Adding Show..." : "Add Show"}
       </button>
     </>
   ) : (

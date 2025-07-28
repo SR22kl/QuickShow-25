@@ -3,10 +3,15 @@ import { MenuIcon, SearchIcon, TicketPlus, XIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
+import { useAppContext } from "../appContext/AppContext";
 
 const Navbar = () => {
   const [isopen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  const { favoriteMovies } = useAppContext();
+
+  // console.log(favoriteMovies);
 
   const toggleMenu = () => {
     setIsOpen(!isopen);
@@ -47,7 +52,7 @@ const Navbar = () => {
         </Link>
 
         <div
-          className={`max-md:absolute max-md:top-0 max-md:left-0 max-md:font-medium max-md:text-lg z-50 flex flex-col md:flex-row items-center max-md:justify-center gap-8 min-md:px-8 py-3 max-md:h-screen min-md:rounded-full backdrop-blur-md bg-black/70 md:bg-white/10 md:border border-gray-300/20 overflow-hidden transition-all duration-300 ease-in ${
+          className={`max-md:absolute max-md:top-0 max-md:left-0 max-md:font-medium max-md:text-lg z-50 flex flex-col md:flex-row items-center max-md:justify-center gap-4 min-md:px-8 py-3 max-md:h-screen min-md:rounded-full backdrop-blur-md bg-black/70 md:bg-white/10 md:border border-gray-300/20 overflow-hidden transition-all duration-300 ease-in ${
             isopen ? "max-md:w-full" : "max-md:w-0"
           }`}
         >
@@ -98,17 +103,19 @@ const Navbar = () => {
             Releases
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
           </Link>
-          <Link
-            onClick={() => {
-              setIsOpen(false);
-              scrollTo(0, 0);
-            }}
-            to={"/favorite"}
-            className="relative text-white no-underline inline-block py-2 group"
-          >
-            Favorites
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
-          </Link>
+          {user && favoriteMovies?.length > 0 && (
+            <Link
+              onClick={() => {
+                setIsOpen(false);
+                scrollTo(0, 0);
+              }}
+              to={"/favorite"}
+              className="relative text-white no-underline inline-block py-2 group"
+            >
+              Favorites
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+          )}
         </div>
 
         <div className="flex items-center gap-4 md:gap-6 lg:gap-10">

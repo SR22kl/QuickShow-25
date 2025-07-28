@@ -1,30 +1,44 @@
 import { useEffect, useState } from "react";
+import { useAppContext } from "../../appContext/AppContext";
 import Title from "../../components/admin/Title";
-import Loader from "../../components/Loader";
 import BlurCircle from "../../components/BlurCircle";
-import { dummyBookingData } from "../../assets/assets";
+import Loader from "../../components/Loader";
 import dateFormat from "../../lib/dateFormat";
 
 const ListBookings = () => {
   const currency = import.meta.env.VITE_CURRENCY;
+  const { axios, user, getToken } = useAppContext();
 
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const getAllBookings = async () => {
     try {
-      setBookings(dummyBookingData);
+      const token = await getToken();
+      if (!token) return;
+      const { data } = await axios.get("/api/admin/all-bookings", {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      if (data.success) {
+        setBookings(data.bookings);
+      }
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.error("Error in fetching list of bookings", error);
+      toast.error(error.message);
     }
   };
 
   console.log(bookings);
 
   useEffect(() => {
-    getAllBookings();
-  }, []);
+    if (user) {
+      getAllBookings();
+    }
+  }, [user]);
+
   return !loading ? (
     <>
       <div className="relative mt-10">

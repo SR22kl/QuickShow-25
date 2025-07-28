@@ -1,20 +1,21 @@
 import {
   ChartLineIcon,
   CircleDollarSignIcon,
-  Loader2,
   PlayCircleIcon,
   StarIcon,
-  UserIcon,
+  UserIcon
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { dummyDashboardData } from "../../assets/assets";
-import Loader from "../../components/Loader";
+import toast from "react-hot-toast";
+import { useAppContext } from "../../appContext/AppContext";
 import Title from "../../components/admin/Title";
 import BlurCircle from "../../components/BlurCircle";
+import Loader from "../../components/Loader";
 import dateFormat from "../../lib/dateFormat";
 
 const Dashboard = () => {
   const currency = import.meta.env.VITE_CURRENCY;
+  const { axios, user, getToken, image_base_url } = useAppContext();
 
   const [dashboardData, setDashboardData] = useState({
     totalBooking: 0,
@@ -48,13 +49,31 @@ const Dashboard = () => {
   ];
 
   const fetchDashboardData = async () => {
-    setDashboardData(dummyDashboardData);
-    setLoading(false);
+    try {
+      const token = await getToken();
+      if (!token) return;
+      const { data } = await axios.get("/api/admin/dashboard", {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      if (data.success) {
+        setDashboardData(data.dashboardData);
+        setLoading(false);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Error fetching dashboard data", error);
+    }
   };
 
   useEffect(() => {
-    fetchDashboardData();
-  }, []);
+    if (user) {
+      fetchDashboardData();
+    }
+  }, [user]);
 
   return !loading ? (
     <>
@@ -73,7 +92,6 @@ const Dashboard = () => {
                     {card.title}
                   </h1>
                   <p className="md:text-2xl text-xl font-semibold mt-2">
-                    {currency}
                     {card.value}
                   </p>
                 </div>
@@ -94,7 +112,7 @@ const Dashboard = () => {
             className="w-55 rounded-lg overflow-hidden h-full pb-3 bg-red-500/10 border border-red-500/20 hover:-translate-y-1.5 transition duration-300 ease-in cursor-pointer"
           >
             <img
-              src={show?.movie?.poster_path}
+              src={image_base_url + show?.movie?.poster_path}
               alt="poster"
               className="h-full w-full"
             />
