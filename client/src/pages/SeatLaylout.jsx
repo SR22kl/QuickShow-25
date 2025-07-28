@@ -23,6 +23,7 @@ const SeatLaylout = () => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [show, setShow] = useState(null);
   const [occupiedSeats, setOccupiedSeats] = useState([]);
+  const [isBookingLoading, setIsBookingLoading] = useState(false);
 
   // console.log(selectedTime)
 
@@ -98,6 +99,7 @@ const SeatLaylout = () => {
   };
 
   const bookTickets = async () => {
+    setIsBookingLoading(true);
     try {
       if (!user) {
         return toast.error("Please login to book tickets");
@@ -128,6 +130,8 @@ const SeatLaylout = () => {
     } catch (error) {
       console.error(error);
       toast.error(error.message);
+    } finally {
+      setIsBookingLoading(false);
     }
   };
 
@@ -213,6 +217,7 @@ const SeatLaylout = () => {
               </p>
             </div>
             <button
+              disabled={isBookingLoading}
               onClick={() => {
                 if (selectedSeat.length === 0 || !selectedTime) {
                   toast.error("Please select seats and show time.");
@@ -222,7 +227,7 @@ const SeatLaylout = () => {
               }}
               className="group flex items-center gap-1 px-6 py-3 text-sm bg-gradient-to-b from-[#f84565] to-[#d63854] hover:from-[#d63854] hover:to-[#f84565] duration-300 ease-in transition rounded-md font-medium cursor-pointer opacity-80"
             >
-              Proceed to Book
+              {isBookingLoading ? "Proceeding....." : "Proceed to Book"}
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 duration-300 ease-in" />
             </button>
           </div>
