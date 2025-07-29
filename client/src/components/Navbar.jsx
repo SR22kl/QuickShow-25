@@ -92,17 +92,7 @@ const Navbar = () => {
             Theaters
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
           </Link>
-          <Link
-            onClick={() => {
-              setIsOpen(false);
-              scrollTo(0, 0);
-            }}
-            to={"/"}
-            className="relative text-white no-underline inline-block py-2 group"
-          >
-            Releases
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
-          </Link>
+
           {user && favoriteMovies?.length > 0 && (
             <Link
               onClick={() => {
@@ -116,6 +106,17 @@ const Navbar = () => {
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
             </Link>
           )}
+          <Link
+            onClick={() => {
+              setIsOpen(false);
+              scrollTo(0, 0);
+            }}
+            to={"/admin"}
+            className="relative text-white no-underline inline-block py-2 group"
+          >
+            Dashboard
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+          </Link>
         </div>
 
         <div className="flex items-center gap-4 md:gap-6 lg:gap-10">
