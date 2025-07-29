@@ -2,6 +2,7 @@ import axios from "axios";
 import axiosRetry from "axios-retry";
 import Movie from "../models/movieModel.js";
 import Show from "../models/showModel.js";
+import { inngest } from "../inngest/index.js";
 
 axiosRetry(axios, {
   retries: 3,
@@ -72,14 +73,14 @@ export const addShow = async (req, res) => {
             accept: "application/json",
             Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
           },
-          timeout: 5000, 
+          timeout: 5000,
         }),
         axios.get(`https://api.themoviedb.org/3/movie/${movieId}/credits`, {
           headers: {
             accept: "application/json",
             Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
           },
-          timeout: 5000, 
+          timeout: 5000,
         }),
       ]);
       const movieApiData = movieDetailsResponse.data;
@@ -120,12 +121,19 @@ export const addShow = async (req, res) => {
     if (showsToCreate.length > 0) {
       await Show.insertMany(showsToCreate);
     }
+
+    //Trigger Inggest Event
+    await inngest.send({
+      name: "app/show.added",
+      data: { movieTitle: movie.title },
+    });
+
     res.status(200).json({
       success: true,
       message: "Show added successfully!",
     });
   } catch (error) {
-    console.error("Error adding show:", error.message); 
+    console.error("Error adding show:", error.message);
     res.status(500).json({
       success: false,
       message: "Failed to add show: " + error.message,
