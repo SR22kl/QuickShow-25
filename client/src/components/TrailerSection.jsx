@@ -133,7 +133,7 @@ const TrailerSection = () => {
               height="100%"
               src={currentTrailer?.videoUrl}
               controls={true}
-              playing={true}
+              playing={false}
             />
           </div>
         </div>
