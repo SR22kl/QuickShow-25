@@ -17,7 +17,7 @@ axiosRetry(axios, {
   },
   onRetry: (retryCount, error, requestConfig) => {
     console.log(
-      `Retry attempt ${retryCount} for ${requestConfig.url}. Error: ${error.message}`
+      `Retry attempt ${retryCount} for ${requestConfig.url}. Error: ${error.message}`,
     );
   },
 });
@@ -32,7 +32,7 @@ export const getNowPlayingMovies = async (req, res) => {
           Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
         },
         timeout: 5000,
-      }
+      },
     );
 
     const movies = data.results;
@@ -111,7 +111,7 @@ export const addShow = async (req, res) => {
         const dateTimeString = `${showDate}T${time}`;
         showsToCreate.push({
           movie: movieId,
-          showDateTime: new Date(dateTimeString),
+          showDateTime: new Date(dateTimeString + "Z"),
           showPrice,
           occupiedSeats: {},
         });
