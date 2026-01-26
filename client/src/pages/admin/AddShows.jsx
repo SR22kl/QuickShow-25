@@ -83,7 +83,7 @@ const AddShows = () => {
       const showsInput = Object.entries(dateTimeSelection).flatMap(
         ([date, timesArray]) =>
           timesArray.map((time) => ({
-            dateTime: new Date(`${date}T${time}`).toISOString(),
+            dateTime: new Date(`${date}T${time}:00`).toISOString(),
           })),
       );
 
