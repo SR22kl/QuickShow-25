@@ -80,11 +80,11 @@ const AddShows = () => {
         return toast.error("Please fill all the fields");
       }
       // Object.entries returns [key, value] pairs, so [date, timesArray] correctly captures the date and its array of times.
-      const showsInput = Object.entries(dateTimeSelection).map(
-        ([date, timesArray]) => ({
-          date,
-          time: timesArray,
-        })
+      const showsInput = Object.entries(dateTimeSelection).flatMap(
+        ([date, timesArray]) =>
+          timesArray.map((time) => ({
+            dateTime: new Date(`${date}T${time}`).toISOString(),
+          })),
       );
 
       const payload = {
@@ -113,7 +113,7 @@ const AddShows = () => {
       toast.error(
         error.response?.data?.message ||
           error.message ||
-          "An unexpected error occurred during submission."
+          "An unexpected error occurred during submission.",
       );
     } finally {
       setAddingShow(false);

@@ -104,17 +104,13 @@ export const addShow = async (req, res) => {
     }
 
     const showsToCreate = [];
-    // Iterate over showsInput (which now correctly has date and array of times)
+    // Iterate over showsInput (each has dateTime as ISO string)
     showsInput.forEach((show) => {
-      const showDate = show.date;
-      show.time.forEach((time) => {
-        const dateTimeString = `${showDate}T${time}`;
-        showsToCreate.push({
-          movie: movieId,
-          showDateTime: new Date(dateTimeString + "Z"),
-          showPrice,
-          occupiedSeats: {},
-        });
+      showsToCreate.push({
+        movie: movieId,
+        showDateTime: new Date(show.dateTime),
+        showPrice,
+        occupiedSeats: {},
       });
     });
 
