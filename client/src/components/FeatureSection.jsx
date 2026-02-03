@@ -32,7 +32,7 @@ const FeatureSection = () => {
           ))}
         </div>
 
-        <div className="flex justify-center mt-16">
+        <div className="flex justify-center mt-20">
           <button
             onClick={() => {
               navigate("/movies");
