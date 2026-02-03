@@ -5,47 +5,72 @@ import { useAppContext } from "../appContext/AppContext";
 
 const MovieCard = ({ movie }) => {
   const navigate = useNavigate();
-    const { image_base_url } = useAppContext();
-  
-  return (
-    <>
-      <div className="flex flex-col justify-between p-3 bg-gray-600/30 rounded-2xl group-hover:not-hover:opacity-50 hover:scale-105 transition duration-300 ease-linear w-64 h-full max-h-[25rem]">
-        <img
-          onClick={() => {
-            navigate(`/movies/${movie._id}`);
-            scrollTo(0, 0);
-          }}
-          src={image_base_url + movie.backdrop_path}
-          alt="movieImg"
-          className="rounded-lg h-52 w-full object-cover object-right-bottom cursor-pointer"
-        />
-        <p className="font-semibold mt-2 truncate">{movie.title}</p>
-        <p className="text-sm text-gray-400 mt-2">
-          {new Date(movie.release_date).getFullYear()} •{" "}
-          {movie.genres
-            .slice(0, 2)
-            .map((genra) => genra.name)
-            .join(" | ")}{" "}
-          • {timeFormat(movie.runtime)}
-        </p>
+  const { image_base_url } = useAppContext();
 
-        <div className="flex items-center justify-between mt-4 pb-3">
-          <button
+  return (
+    <div className="relative w-64 h-full max-h-[26rem] group">
+      <div className="rounded-2xl overflow-hidden shadow-lg bg-gradient-to-b from-slate-800/60 to-slate-900/60 transform transition duration-300 ease-linear group-hover:scale-105">
+        <div className="relative">
+          <img
             onClick={() => {
               navigate(`/movies/${movie._id}`);
               scrollTo(0, 0);
             }}
-            className="px-4 py-2 text-xm bg-gradient-to-l from-[#f84565] to-[#d63854] hover:from-[#d63854] hover:to-[#f84565] duration-300 ease-in transition rounded-md font-medium cursor-pointer"
-          >
-            Book Tickets
-          </button>
-          <p className="flex items-center gap-1 text-sm text-gray-400 mt-2 pr-2">
-            <StarIcon className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-            {movie.vote_average.toFixed(1)}
+            src={image_base_url + movie.backdrop_path}
+            alt={movie.title}
+            className="w-full h-52 object-cover object-right-bottom cursor-pointer transition-transform duration-500 group-hover:scale-110"
+          />
+
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+
+          <span className="absolute left-3 top-3 bg-black/60 text-xs text-white px-2 py-1 rounded-full font-semibold">
+            {new Date(movie.release_date).getFullYear()}
+          </span>
+
+          <span className="absolute right-3 top-3 bg-yellow-500/95 text-xs text-slate-900 px-2 py-1 rounded-full font-bold flex items-center gap-1">
+            <StarIcon className="w-4 h-4 text-slate-900" />
+            {movie.vote_average ? movie.vote_average.toFixed(1) : "--"}
+          </span>
+        </div>
+
+        <div className="p-4">
+          <p className="font-semibold text-lg leading-tight truncate">
+            {movie.title}
           </p>
+
+          <p className="text-sm text-gray-300 mt-1 line-clamp-2">
+            {movie.overview
+              ? movie.overview
+              : movie.tagline
+                ? movie.tagline
+                : "No description available."}
+          </p>
+
+          <div className="flex items-center justify-between mt-4">
+            <div className="text-sm text-gray-400">
+              {movie.genres && movie.genres.length > 0
+                ? movie.genres
+                    .slice(0, 2)
+                    .map((g) => g.name)
+                    .join(" • ") +
+                  " • " +
+                  timeFormat(movie.runtime)
+                : timeFormat(movie.runtime)}
+            </div>
+
+            <button
+              onClick={() => {
+                navigate(`/movies/${movie._id}`);
+                scrollTo(0, 0);
+              }}
+              className="px-3 py-2 bg-gradient-to-l from-[#f84565] to-[#d63854] hover:opacity-95 rounded-md text-sm font-medium text-white shadow-sm"
+            >
+              Book
+            </button>
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
