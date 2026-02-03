@@ -10,18 +10,18 @@ const MovieCard = ({ movie }) => {
   return (
     <div className="relative w-64 h-full max-h-[26rem] group">
       <div className="rounded-2xl overflow-hidden shadow-lg bg-gradient-to-b from-slate-800/60 to-slate-900/60 transform transition duration-300 ease-linear group-hover:scale-105">
-        <div className="relative">
+        <div className="relative h-52 overflow-hidden">
           <img
             onClick={() => {
               navigate(`/movies/${movie._id}`);
               scrollTo(0, 0);
             }}
-            src={image_base_url + movie.backdrop_path}
+            src={image_base_url + movie?.poster_path}
             alt={movie.title}
-            className="w-full h-52 object-cover object-right-bottom cursor-pointer transition-transform duration-500 group-hover:scale-110"
+            className="absolute inset-0 w-full h-full object-cover object-right-bottom cursor-pointer transition-transform duration-500 group-hover:scale-110"
           />
 
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
 
           <span className="absolute left-3 top-3 bg-black/60 text-xs text-white px-2 py-1 rounded-full font-semibold">
             {new Date(movie.release_date).getFullYear()}
