@@ -96,12 +96,6 @@ const Banner = () => {
 
         {/* Content */}
         <div className="relative h-full flex flex-col justify-center items-start gap-4 px-6 md:px-16 lg:px-36">
-          <img
-            src={assets.marvelLogo}
-            alt="logo"
-            className="max-h-11 lg:h-11"
-          />
-
           <h1 className="text-4xl sm:text-5xl md:text-[70px] font-semibold md:leading-[80px] max-w-2xl text-white">
             {currentMovie.title || currentMovie.name}
           </h1>
