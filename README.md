@@ -232,7 +232,7 @@ VITE_TMDB_IMAGE_BASE_URL=https://image.tmdb.org/t/p/original
 
 ```env
 # MongoDB Connection
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/quickshow
+MONGODB_URI=mongodb+srv://your_username:your_password@cluster.mongodb.net
 
 # Clerk Authentication
 CLERK_SECRET_KEY=your_clerk_secret_key
