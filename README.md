@@ -524,7 +524,7 @@ This project is licensed under the ISC License.
 
 ## 👥 Contributors
 
-- Your Name - [GitHub](https://github.com/yourprofile)
+- Sumit Rathod - [GitHub](https://github.com/SR22kl)
 
 ## 📞 Support
 
