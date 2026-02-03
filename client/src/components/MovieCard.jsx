@@ -8,9 +8,9 @@ const MovieCard = ({ movie }) => {
   const { image_base_url } = useAppContext();
 
   return (
-    <div className="relative w-64 h-full max-h-[26rem] group">
+    <div className="relative w-64 h-full max-h-[26rem] group mb-8 md:mb-5">
       <div className="rounded-2xl overflow-hidden shadow-lg bg-gradient-to-b from-slate-800/60 to-slate-900/60 transform transition duration-300 ease-linear group-hover:scale-105">
-        <div className="relative h-80 overflow-hidden">
+        <div className="relative h-75 md:h-80 overflow-hidden">
           <img
             onClick={() => {
               navigate(`/movies/${movie._id}`);
