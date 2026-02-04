@@ -160,7 +160,7 @@ const Banner = () => {
             key={index}
             onClick={() => goToSlide(index)}
             className={`h-2 rounded-full transition-all duration-300 ${
-              index === currentIndex
+              index === currentIndex % 5
                 ? "w-8 bg-red-600"
                 : "w-2 bg-gray-500 hover:bg-gray-400"
             }`}
