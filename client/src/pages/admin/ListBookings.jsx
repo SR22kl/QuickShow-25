@@ -41,7 +41,7 @@ const ListBookings = () => {
 
   return !loading ? (
     <>
-      <div className="relative mt-10">
+      <div className="relative mt-14 md:mt-10">
         <Title text1="List of" text2="Bookings" />
         <BlurCircle top="0px" left="0px" />
         <div className="max-w-4xl mt-6 overflow-x-auto">

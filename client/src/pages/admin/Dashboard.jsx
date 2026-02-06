@@ -77,7 +77,7 @@ const Dashboard = () => {
 
   return !loading ? (
     <>
-      <div className="mt-10">
+      <div className="mt-14 md:mt-10">
         <Title text1={"Admin"} text2={"Dashboard"} />
         <div className="relative flex flex-wrap gap-4 mt-6">
           <BlurCircle top="-100px" left="0px" />

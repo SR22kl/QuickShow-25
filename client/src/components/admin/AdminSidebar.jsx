@@ -37,10 +37,10 @@ const AdminSidebar = () => {
   return (
     <>
       {/* Mobile Menu Button */}
-      <div className="md:hidden fixed top-20 left-4 z-50">
+      <div className="md:hidden fixed top-18 left-1 z-50">
         <button
           onClick={toggleSidebar}
-          className="p-2 rounded-lg bg-gradient-to-br from-red-500 to-red-600 text-white hover:shadow-lg transition-all duration-300"
+          className="p-2 rounded-lg bg-gradient-to-br from-red-500 to-pink-700 text-white hover:shadow-lg transition-all duration-300 opacity-90"
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
@@ -49,15 +49,15 @@ const AdminSidebar = () => {
       {/* Overlay for Mobile */}
       {isOpen && (
         <div
-          className="md:hidden fixed inset-0 bg-black/40 z-30 transition-opacity duration-300"
+          className="md:hidden fixed inset-0 bg-black/30 z-30 transition-opacity duration-300"
           onClick={() => setIsOpen(false)}
         ></div>
       )}
 
       {/* Sidebar */}
       <div
-        className={`fixed md:relative h-[calc(100vh-64px)] flex flex-col items-center pt-8 w-64 md:w-60 border-r border-gray-300/20 bg-gradient-to-b from-gray-900 to-black text-sm transition-all duration-300 ease-in-out z-40 ${
-          isOpen ? "left-0" : "-left-64 md:left-0"
+        className={`fixed md:relative h-[calc(100vh-68px)] flex flex-col items-center pt-8 w-64 md:w-60 border-r border-gray-300/20 bg-gradient-to-b from-gray-900 to-black text-sm transition-all duration-300 ease-in-out z-40 ${
+          isOpen ? "left-0 top-16" : "-left-64 md:left-0"
         }`}
       >
         {/* Profile Section */}

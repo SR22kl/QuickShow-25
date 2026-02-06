@@ -127,7 +127,7 @@ const AddShows = () => {
 
   return nowPlayingMovies.length > 0 ? (
     <>
-      <div className="relative mt-10">
+      <div className="relative mt-14 md:mt-10">
         <Title text1="Add" text2="Shows" />
         <BlurCircle top="-10px" left="0px" />
         <div className="overflow-x-auto pb-4 no-scrollbar">
