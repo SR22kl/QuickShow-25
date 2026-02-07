@@ -8,9 +8,32 @@ const Banner = () => {
   const [movies, setMovies] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [genresMap, setGenresMap] = useState({});
 
   const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
   const TMDB_IMAGE_BASE_URL = import.meta.env.VITE_TMDB_IMAGE_BASE_URL;
+
+  // Fetch TMDB genre list once and store id->name map
+  useEffect(() => {
+    const fetchGenres = async () => {
+      if (!TMDB_API_KEY) return;
+      try {
+        const res = await fetch(
+          `https://api.themoviedb.org/3/genre/movie/list?api_key=${TMDB_API_KEY}`,
+        );
+        const data = await res.json();
+        const map = {};
+        (data.genres || []).forEach((g) => {
+          map[g.id] = g.name;
+        });
+        setGenresMap(map);
+      } catch (error) {
+        console.error("Error fetching genres:", error);
+      }
+    };
+
+    fetchGenres();
+  }, [TMDB_API_KEY]);
 
   // Fetch trending movies from TMDB
   useEffect(() => {
@@ -78,6 +101,8 @@ const Banner = () => {
     ? `${TMDB_IMAGE_BASE_URL}${currentMovie.backdrop_path}`
     : null;
 
+  console.log(currentMovie?.genre_ids);
+
   return (
     <div className="relative w-full h-screen overflow-hidden">
       {/* Carousel Container */}
@@ -97,13 +122,17 @@ const Banner = () => {
         {/* Content */}
         <div className="relative h-full flex flex-col justify-center items-start gap-4 px-6 md:px-16 lg:px-36">
           <h1 className="text-4xl sm:text-5xl md:text-[70px] font-semibold md:leading-[80px] max-w-2xl text-white">
-            {currentMovie.title || currentMovie.name}
+            {currentMovie?.title || currentMovie?.name}
           </h1>
 
           <div className="flex flex-wrap items-center gap-4 text-gray-300">
-            {currentMovie.genre_ids && (
+            {(currentMovie.genres || currentMovie.genre_ids) && (
               <span className="text-sm md:text-base">
-                {currentMovie.genre_ids.join(" | ")}
+                {currentMovie.genres
+                  ? currentMovie.genres.map((g) => g.name).join(" | ")
+                  : currentMovie.genre_ids
+                      .map((id) => genresMap[id] || id)
+                      .join(" | ")}
               </span>
             )}
             {currentMovie.release_date && (
