@@ -15,7 +15,7 @@ const Favorite = () => {
           Your Favorites Movies
         </h1>
         <div className="flex flex-wrap max-sm:justify-center mt-8">
-          <div className="flex flex-wrap group gap-8 max-sm:justify-center pb-20 ">
+          <div className="flex flex-wrap gap-8 max-sm:justify-center pb-20">
             {favoriteMovies?.map((movie) => (
               <MovieCard movie={movie} key={movie._id} />
             ))}
