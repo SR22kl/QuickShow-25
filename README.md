@@ -2,7 +2,7 @@
 
 A full-stack movie booking application built with React, Node.js, and MongoDB. Users can browse trending movies, view details, book tickets, manage bookings, and add movies to favorites. Admins can manage shows and bookings.
 
-![GoStays Preview](./preview/preview1.png) <!-- Replace with actual screenshot -->
+![Quickshow Preview](./preview/preview1.png) <!-- Replace with actual screenshot -->
 
 ## 📋 Table of Contents
 
